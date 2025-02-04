@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime, timedelta
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -43,6 +44,8 @@ def get_turno():
         return "4º Turno"
 
 
+
+
 @app.route("/checklist", methods=["GET"])
 def check_list():
     try:
@@ -61,12 +64,19 @@ def check_list():
         for linha in data[1:]:  # Ignorar cabeçalho
             data_linha = datetime.strptime(linha[0], "%d/%m/%y").strftime("%Y-%m-%d")
             if data_linha == hoje and linha[1] == turno and maquina in linha[2]:
-                return jsonify({"status": "Sim"})  # Check-list foi feito
+                return render_template("status.html",
+                                       status_class="positive",
+                                       status_message="Check-list realizado com sucesso!",
+                                       detailed_message="A máquina foi verificada no turno atual.")
 
-        return jsonify({"status": "Não"})  # Check-list não encontrado
+        return render_template("status.html",
+                               status_class="negative",
+                               status_message="Check-list não encontrado",
+                               detailed_message="Não há registros de check-list para a máquina no turno atual.")
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 if __name__ == "__main__":
