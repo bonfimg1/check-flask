@@ -66,7 +66,7 @@ def check_list():
             if data_linha == hoje and linha[1] == turno and maquina in linha[2]:
                 return render_template("status.html",
                                        status_class="positive",
-                                       status_message="Check-list realizado com sucesso!",
+                                       status_message="Check-list realizado!",
                                        detailed_message="A máquina foi verificada no turno atual.")
 
         return render_template("status.html",
