@@ -7,8 +7,8 @@ from flask import render_template
 app = Flask(__name__)
 
 # Configurar acesso ao Google Sheets
-SHEET_ID = "1wutUPuXEnYVAOqUVOKhYlqeIWqsiSjOug-TNK5N0vSY"  # ID da sua planilha
-SHEET_NAME = "check"  # Nome da aba
+SHEET_ID = "1E17ukRFwxwKcQSNhH130HU0gvg1JFLJsW6k19osxJEg"  # ID da sua planilha
+SHEET_NAME = "Servidores"  # Nome da aba
 
 
 scope = ["https://www.googleapis.com/auth/drive", "https://www.googleapis.com/auth/spreadsheets",
@@ -63,7 +63,15 @@ def check_list():
         # Percorre a planilha e verifica se há check-list registrado para a máquina
         for linha in data[1:]:  # Ignorar cabeçalho
             data_str = linha[0].strip()  # Remove espaços extras
-            data_linha = datetime.strptime(data_str[:8], "%d/%m/%y").strftime("%d-%m-%Y")
+            data_linha = datetime.strptime(data_str[:8], "%d/%m/%y").strftime("%Y-%m-%d")
+
+            print(data_linha)
+            print(hoje)
+            print(linha[1])
+            print(turno)
+            print(maquina)
+            print(linha[2])
+
 
             if data_linha == hoje and linha[1] == turno and maquina in linha[2]:
                 return render_template("status.html",
