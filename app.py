@@ -62,7 +62,9 @@ def check_list():
 
         # Percorre a planilha e verifica se há check-list registrado para a máquina
         for linha in data[1:]:  # Ignorar cabeçalho
-            data_linha = datetime.strptime(linha[0], "%d/%m/%y").strftime("%Y-%m-%d")
+            data_str = linha[0].strip()  # Remove espaços extras
+            data_linha = datetime.strptime(data_str[:8], "%d/%m/%y").strftime("%d-%m-%Y")
+
             if data_linha == hoje and linha[1] == turno and maquina in linha[2]:
                 return render_template("status.html",
                                        status_class="positive",
